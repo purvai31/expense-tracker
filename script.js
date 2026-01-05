@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Get saved expenses from localStorage (or empty array)
     let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
     let total = 0;
 
@@ -12,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const totalSpan = document.getElementById("total");
     const addBtn = document.getElementById("addBtn");
 
-    // Page load par existing data show karo
     renderExpenses();
 
     function addExpense() {
@@ -28,14 +26,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const expense = {
             id: Date.now(),
-            title: title,
+            title,
             amount: Number(amount),
-            category: category,
-            date: date
+            category,
+            date
         };
 
         expenses.push(expense);
-        saveToLocalStorage();
+        localStorage.setItem("expenses", JSON.stringify(expenses));
         renderExpenses();
         clearInputs();
     }
@@ -51,9 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>₹${exp.amount}</td>
                 <td>${exp.category}</td>
                 <td>${exp.date}</td>
-                <td>
-                    <button onclick="deleteExpense(${exp.id})">❌</button>
-                </td>
+                <td><button onclick="deleteExpense(${exp.id})">❌</button></td>
             `;
             expenseList.appendChild(row);
             total += exp.amount;
@@ -64,13 +60,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.deleteExpense = function (id) {
         expenses = expenses.filter(exp => exp.id !== id);
-        saveToLocalStorage();
+        localStorage.setItem("expenses", JSON.stringify(expenses));
         renderExpenses();
     };
-
-    function saveToLocalStorage() {
-        localStorage.setItem("expenses", JSON.stringify(expenses));
-    }
 
     function clearInputs() {
         titleInput.value = "";
@@ -79,8 +71,5 @@ document.addEventListener("DOMContentLoaded", function () {
         dateInput.value = "";
     }
 
-    // ✅ Laptop + Mobile BOTH
     addBtn.addEventListener("click", addExpense);
-    addBtn.addEventListener("touchstart", addExpense);
-
 });
