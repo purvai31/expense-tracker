@@ -3,20 +3,23 @@ body {
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(120deg, #667eea, #764ba2);
     min-height: 100vh;
+    padding: 10px;
 }
 
 .container {
     background: white;
     max-width: 900px;
-    margin: 40px auto;
-    padding: 25px;
+    margin: 20px auto;
+    padding: 20px;
     border-radius: 12px;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
 }
 
 h1 {
     text-align: center;
     color: #333;
+    font-size: 24px;
 }
 
 .subtitle {
@@ -25,33 +28,31 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* 🔥 FORM FIX */
+
+/* 🔥 FORM FIX: Mobile par 1 column, Laptop par 5 */
+
 .form {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 10px;
     margin-bottom: 25px;
 }
 
-/* Inputs + Select + Date */
 .form input,
 .form select {
-    padding: 10px;
+    padding: 12px;
+    /* Bada touch area */
     border-radius: 6px;
     border: 1px solid #ccc;
-    font-size: 14px;
-    background: white;
-    color: #000; /* ✅ DATE TEXT FIX */
+    font-size: 16px;
+    /* 16px se niche iPhone zoom kar deta hai */
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Date input mobile fix */
-input[type="date"] {
-    color: #000;
-    -webkit-appearance: none;
-    appearance: none;
-}
 
-/* Button */
+/* Button Mobile Fix */
+
 .form button {
     background: #667eea;
     color: white;
@@ -59,22 +60,34 @@ input[type="date"] {
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 16px;
+    min-height: 48px;
+    /* Standard Touch Height */
+    transition: 0.3s;
 }
 
-.form button:hover {
-    background: #5a67d8;
+.form button:active {
+    transform: scale(0.96);
 }
 
-/* Table */
+
+/* Table Mobile Fix */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 500px;
 }
 
 th {
     background: #667eea;
     color: white;
-    padding: 10px;
+    padding: 12px;
 }
 
 td {
@@ -89,12 +102,11 @@ h2 {
     color: #333;
 }
 
-/* 📱 MOBILE RESPONSIVE FIX */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .form {
         grid-template-columns: 1fr;
     }
-
+    /* Force 1 column on mobile */
     h2 {
         text-align: center;
     }
