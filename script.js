@@ -24,15 +24,14 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const expense = {
+        expenses.push({
             id: Date.now(),
             title,
             amount: Number(amount),
             category,
             date
-        };
+        });
 
-        expenses.push(expense);
         localStorage.setItem("expenses", JSON.stringify(expenses));
         renderExpenses();
         clearInputs();
@@ -43,26 +42,19 @@ document.addEventListener("DOMContentLoaded", function () {
         total = 0;
 
         expenses.forEach(exp => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${exp.title}</td>
-                <td>₹${exp.amount}</td>
-                <td>${exp.category}</td>
-                <td>${exp.date}</td>
-                <td><button onclick="deleteExpense(${exp.id})">❌</button></td>
+            expenseList.innerHTML += `
+                <tr>
+                    <td>${exp.title}</td>
+                    <td>₹${exp.amount}</td>
+                    <td>${exp.category}</td>
+                    <td>${exp.date}</td>
+                </tr>
             `;
-            expenseList.appendChild(row);
             total += exp.amount;
         });
 
-        totalSpan.innerText = total;
+        totalSpan.textContent = total;
     }
-
-    window.deleteExpense = function (id) {
-        expenses = expenses.filter(exp => exp.id !== id);
-        localStorage.setItem("expenses", JSON.stringify(expenses));
-        renderExpenses();
-    };
 
     function clearInputs() {
         titleInput.value = "";
@@ -71,5 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
         dateInput.value = "";
     }
 
+    // ✅ ONLY CLICK — works on mobile + laptop
     addBtn.addEventListener("click", addExpense);
 });
