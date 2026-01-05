@@ -69,3 +69,5 @@ function clearInputs() {
     document.getElementById("category").value = "";
     document.getElementById("date").value = "";
 }
+// Mobile-friendly button trigger
+document.getElementById("addBtn").addEventListener("click", addExpense);
