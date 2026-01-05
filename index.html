@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    <div class="container">
+        <h1>💰 Expense Tracker</h1>
+        <p class="subtitle">Manage your daily expenses</p>
 
-<div class="container">
-    <h1>💰 Expense Tracker</h1>
-    <p class="subtitle">Manage your daily expenses</p>
-
-    <div class="form">
-        <input type="text" id="title" placeholder="Expense Title">
-        <input type="number" id="amount" placeholder="Amount (₹)">
-        <select id="category">
+        <div class="form">
+            <input type="text" id="title" placeholder="Expense Title">
+            <input type="number" id="amount" placeholder="Amount (₹)">
+            <select id="category">
             <option value="">Category</option>
             <option>Food</option>
             <option>Travel</option>
@@ -23,31 +24,27 @@
             <option>Bills</option>
             <option>Other</option>
         </select>
-
-        <!-- 👇 label added so date visible on mobile -->
-        <label class="date-label">
-            Date
             <input type="date" id="date">
-        </label>
+            <button id="addBtn" type="button">Add Expense</button>
+        </div>
 
-        <button id="addBtn" type="button">Add Expense</button>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="expenseList"></tbody>
+            </table>
+        </div>
+
+        <h2>Total Expense: ₹<span id="total">0</span></h2>
     </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Amount (₹)</th>
-                <th>Category</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody id="expenseList"></tbody>
-    </table>
-
-    <h2>Total Expense: ₹<span id="total">0</span></h2>
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
