@@ -1,73 +1,86 @@
-// Get saved expenses from localStorage (or empty array)
-let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
-let total = 0;
+document.addEventListener("DOMContentLoaded", function () {
 
-// Page load par existing data show karo
-renderExpenses();
+    // Get saved expenses from localStorage (or empty array)
+    let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+    let total = 0;
 
-function addExpense() {
-    const title = document.getElementById("title").value;
-    const amount = document.getElementById("amount").value;
-    const category = document.getElementById("category").value;
-    const date = document.getElementById("date").value;
+    const titleInput = document.getElementById("title");
+    const amountInput = document.getElementById("amount");
+    const categoryInput = document.getElementById("category");
+    const dateInput = document.getElementById("date");
+    const expenseList = document.getElementById("expenseList");
+    const totalSpan = document.getElementById("total");
+    const addBtn = document.getElementById("addBtn");
 
-    if (title === "" || amount === "" || category === "" || date === "") {
-        alert("Please fill all fields");
-        return;
+    // Page load par existing data show karo
+    renderExpenses();
+
+    function addExpense() {
+        const title = titleInput.value.trim();
+        const amount = amountInput.value;
+        const category = categoryInput.value;
+        const date = dateInput.value;
+
+        if (!title || !amount || !category || !date) {
+            alert("Please fill all fields");
+            return;
+        }
+
+        const expense = {
+            id: Date.now(),
+            title: title,
+            amount: Number(amount),
+            category: category,
+            date: date
+        };
+
+        expenses.push(expense);
+        saveToLocalStorage();
+        renderExpenses();
+        clearInputs();
     }
 
-    const expense = {
-        id: Date.now(), // unique id
-        title: title,
-        amount: Number(amount),
-        category: category,
-        date: date
+    function renderExpenses() {
+        expenseList.innerHTML = "";
+        total = 0;
+
+        expenses.forEach(exp => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${exp.title}</td>
+                <td>₹${exp.amount}</td>
+                <td>${exp.category}</td>
+                <td>${exp.date}</td>
+                <td>
+                    <button onclick="deleteExpense(${exp.id})">❌</button>
+                </td>
+            `;
+            expenseList.appendChild(row);
+            total += exp.amount;
+        });
+
+        totalSpan.innerText = total;
+    }
+
+    window.deleteExpense = function (id) {
+        expenses = expenses.filter(exp => exp.id !== id);
+        saveToLocalStorage();
+        renderExpenses();
     };
 
-    expenses.push(expense);
-    saveToLocalStorage();
-    renderExpenses();
-    clearInputs();
-}
+    function saveToLocalStorage() {
+        localStorage.setItem("expenses", JSON.stringify(expenses));
+    }
 
-function renderExpenses() {
-    const table = document.getElementById("expenseList");
-    table.innerHTML = "";
-    total = 0;
+    function clearInputs() {
+        titleInput.value = "";
+        amountInput.value = "";
+        categoryInput.value = "";
+        dateInput.value = "";
+    }
 
-    expenses.forEach(exp => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${exp.title}</td>
-            <td>₹${exp.amount}</td>
-            <td>${exp.category}</td>
-            <td>${exp.date}</td>
-            <td>
-                <button onclick="deleteExpense(${exp.id})">❌</button>
-            </td>
-        `;
-        table.appendChild(row);
-        total += exp.amount;
-    });
+    // ✅ Laptop + Mobile BOTH
+    addBtn.addEventListener("click", addExpense);
+    addBtn.addEventListener("touchstart", addExpense);
 
-    document.getElementById("total").innerText = total;
-}
-
-function deleteExpense(id) {
-    expenses = expenses.filter(exp => exp.id !== id);
-    saveToLocalStorage();
-    renderExpenses();
-}
-
-function saveToLocalStorage() {
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-}
-
-function clearInputs() {
-    document.getElementById("title").value = "";
-    document.getElementById("amount").value = "";
-    document.getElementById("category").value = "";
-    document.getElementById("date").value = "";
-}
-// Mobile-friendly button trigger
-document.getElementById("addBtn").addEventListener("click", addExpense);
+});
